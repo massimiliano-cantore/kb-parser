@@ -1,0 +1,26 @@
+# Ambienti virtuali
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Test e strumenti
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Indici generati
+index.json
+*.index.json
+
+# Segreti e IDE
+.env
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
