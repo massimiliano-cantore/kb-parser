@@ -160,6 +160,19 @@ pip install -r requirements-dev.txt
 pytest
 ```
 
+## Consegna
+
+- Formato richiesto: **link pubblico a un notebook Google Colab** (condiviso come
+  "Chiunque abbia il link", ruolo "Visualizzatore").
+- Il repository GitHub deve essere **pubblico** al momento della consegna (durante lo sviluppo
+  resta privato).
+- Il notebook di consegna clona il repo pubblico, installa il pacchetto e ne dimostra l'uso
+  sull'archivio di prova: build dell'indice, riepilogo degli errori, elenco, ricerca, filtro,
+  statistiche, salvataggio e ricaricamento del JSON. Deve funzionare su un runtime Colab nuovo,
+  senza token né file locali.
+- Il README deve contenere le istruzioni di installazione ed esecuzione.
+- Lo sviluppo può avvenire in Colab: si clona il repo, si modificano i file `.py` e si fa push.
+
 ## Archivio di prova (`sample_archive/`)
 
 Circa 15 documenti fittizi ma verosimili (procedure, verbali, schede tecniche, note) nei tre
