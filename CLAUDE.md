@@ -78,8 +78,13 @@ KBParserError                 # base comune
 ├── UnsupportedFormatError    # estensione non gestita
 ├── EmptyDocumentError        # file vuoto o solo spazi
 ├── DocumentReadError         # illeggibile (permessi, I/O, encoding)
-└── CorruptedContentError     # contenuto malformato (es. CSV rotto, dati binari)
+├── CorruptedContentError     # contenuto malformato (es. CSV rotto, dati binari)
+└── InvalidArchiveError       # cartella dell'archivio inesistente o non valida
 ```
+
+Ogni eccezione ha `path`, `message` e un attributo di classe `reason` (etichetta breve usata
+per raggruppare gli scarti nel riepilogo). `InvalidArchiveError` è l'unico errore che ferma
+la scansione.
 
 ### BaseReader (template method)
 
@@ -121,10 +126,13 @@ python -m kb_parser stats  --index index.json
    nome del file (senza estensione) come ultima risorsa.
 2. **Data**: si cercano nel testo i formati `AAAA-MM-GG` e `GG/MM/AAAA`. Se assente, `None`
    (`null` nel JSON).
-3. **Encoding**: prima UTF-8, poi Latin-1 come ripiego. Latin-1 decodifica qualsiasi sequenza
-   di byte, quindi dopo la decodifica serve un controllo di plausibilità (byte nulli, alta
-   percentuale di caratteri di controllo). Se il controllo fallisce, il file è considerato
-   illeggibile o binario e viene scartato con un messaggio chiaro.
+3. **Encoding**: UTF-16 (solo se il file inizia con il BOM), poi UTF-8 (con o senza BOM), poi
+   Windows-1252, infine Latin-1. Windows-1252 precede Latin-1 perché i file scritti su
+   Windows usano i byte 0x80-0x9F per `€`, apostrofi e virgolette tipografiche, che in
+   Latin-1 diventerebbero caratteri di controllo. Latin-1 decodifica qualsiasi sequenza di
+   byte, quindi dopo la decodifica c'è un controllo di plausibilità: byte nulli o più del 5%
+   di caratteri di controllo → `CorruptedContentError` (file binario). File oltre 50 MB →
+   `DocumentReadError`.
 4. **Sottocartelle**: la scansione è ricorsiva.
 5. **Ricerca**: per sottostringa (anche parti di parola), senza distinzione tra maiuscole e
    minuscole (usare `casefold()`), su titolo e contenuto.
@@ -137,7 +145,11 @@ python -m kb_parser stats  --index index.json
 9. **CSV malformato**: se una riga ha un numero di colonne diverso dall'intestazione, o il
    modulo `csv` segnala un errore, l'intero file è scartato con `CorruptedContentError`.
 10. **Percorso nel `Document`**: relativo alla cartella dell'archivio, con `/` come separatore.
-11. **`Document.from_dict()`** solleva `ValueError`; è l'indice, al caricamento del JSON, a
+11. **Errori inattesi nello scanner**: oltre a `KBParserError`, lo scanner intercetta
+    qualsiasi altra eccezione su un singolo file e la registra nel riepilogo con motivo
+    `unexpected error`, tipo e messaggio. Non è silenziosa: serve a non fermare la scansione
+    di un archivio sconosciuto per un caso non previsto.
+12. **`Document.from_dict()`** solleva `ValueError`; è l'indice, al caricamento del JSON, a
     trasformarlo in un errore del progetto che include il nome del file indice.
 
 ## Convenzioni di codice
