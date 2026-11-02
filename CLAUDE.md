@@ -79,7 +79,8 @@ KBParserError                 # base comune
 ├── EmptyDocumentError        # file vuoto o solo spazi
 ├── DocumentReadError         # illeggibile (permessi, I/O, encoding)
 ├── CorruptedContentError     # contenuto malformato (es. CSV rotto, dati binari)
-└── InvalidArchiveError       # cartella dell'archivio inesistente o non valida
+├── InvalidArchiveError       # cartella dell'archivio inesistente o non valida
+└── IndexFileError            # file indice mancante, illeggibile o non valido
 ```
 
 Ogni eccezione ha `path`, `message` e un attributo di classe `reason` (etichetta breve usata
@@ -118,7 +119,10 @@ python -m kb_parser list   --index index.json
 python -m kb_parser search "manutenzione" --index index.json
 python -m kb_parser filter csv --index index.json
 python -m kb_parser stats  --index index.json
+python -m kb_parser show note/idee_nuovi_corsi.txt --index index.json
 ```
+
+Errori → messaggio su stderr e codice di uscita 1, senza traceback. Argomenti non validi → 2.
 
 ## Decisioni prese
 
@@ -149,7 +153,14 @@ python -m kb_parser stats  --index index.json
     qualsiasi altra eccezione su un singolo file e la registra nel riepilogo con motivo
     `unexpected error`, tipo e messaggio. Non è silenziosa: serve a non fermare la scansione
     di un archivio sconosciuto per un caso non previsto.
-12. **`Document.from_dict()`** solleva `ValueError`; è l'indice, al caricamento del JSON, a
+12. **Ordine dei risultati di ricerca**: prima i documenti con la parola nel titolo, poi per
+    numero di occorrenze nel contenuto, poi per percorso. Ogni risultato ha un frammento di
+    testo attorno alla prima occorrenza, con la parola tra parentesi quadre.
+13. **File scartati nell'indice**: `index.json` contiene anche l'elenco `skipped`, così `stats`
+    mostra gli scarti senza rifare la scansione.
+14. **Formato di `index.json`**: `format_version`, `created_at`, `source_folder`,
+    `document_count`, `documents`, `skipped`. Il salvataggio passa da un file `.tmp`.
+15. **`Document.from_dict()`** solleva `ValueError`; è l'indice, al caricamento del JSON, a
     trasformarlo in un errore del progetto che include il nome del file indice.
 
 ## Convenzioni di codice

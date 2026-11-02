@@ -60,3 +60,9 @@ class InvalidArchiveError(KBParserError):
     """The archive folder given by the user does not exist or is not a folder."""
 
     reason = "invalid archive"
+
+
+class IndexFileError(KBParserError):
+    """The index file cannot be written, read or is not a valid index."""
+
+    reason = "invalid index"
