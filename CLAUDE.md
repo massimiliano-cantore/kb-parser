@@ -128,13 +128,17 @@ python -m kb_parser stats  --index index.json
 4. **Sottocartelle**: la scansione è ricorsiva.
 5. **Ricerca**: per sottostringa (anche parti di parola), senza distinzione tra maiuscole e
    minuscole (usare `casefold()`), su titolo e contenuto.
-
-## Punti ancora aperti
-
-- Lunghezza dell'estratto (numero di caratteri o di parole).
-- Trattamento di file e cartelle nascosti (es. `.DS_Store`, `.git`).
-- Come trasformare le righe di un CSV in testo normalizzato.
-- Cosa considerare "CSV malformato" (es. righe con numero di colonne diverso dall'intestazione).
+6. **Estratto**: primi 200 caratteri circa del contenuto, tagliati a fine parola, con `…`
+   se il testo continua.
+7. **File e cartelle nascosti** (nome che inizia con `.`): ignorati in silenzio, non compaiono
+   né tra gli elaborati né tra gli scartati.
+8. **CSV → testo**: ogni riga diventa `colonna: valore; colonna: valore; ...` usando
+   l'intestazione. Il separatore viene riconosciuto automaticamente (`,` o `;`).
+9. **CSV malformato**: se una riga ha un numero di colonne diverso dall'intestazione, o il
+   modulo `csv` segnala un errore, l'intero file è scartato con `CorruptedContentError`.
+10. **Percorso nel `Document`**: relativo alla cartella dell'archivio, con `/` come separatore.
+11. **`Document.from_dict()`** solleva `ValueError`; è l'indice, al caricamento del JSON, a
+    trasformarlo in un errore del progetto che include il nome del file indice.
 
 ## Convenzioni di codice
 
