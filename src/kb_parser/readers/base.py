@@ -76,8 +76,10 @@ class BaseReader(ABC):
             CorruptedContentError: If the content is binary or malformed.
         """
         raw = self._read_bytes(path)
-        if not raw.strip():
+        if not raw:
             raise EmptyDocumentError(path, "the file is empty")
+        if not raw.strip():
+            raise EmptyDocumentError(path, "the file contains only whitespace")
 
         text = self._decode(raw, path)
         if not text.strip():
