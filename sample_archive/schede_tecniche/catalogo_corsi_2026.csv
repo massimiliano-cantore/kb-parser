@@ -1,0 +1,6 @@
+codice_corso,titolo,ore,modalità,descrizione
+PY-01,Python per l'automazione,48,aula,"Fondamenti di Python, gestione file e automazione di attività ripetitive"
+PLC-02,Programmazione PLC base,40,laboratorio,"Logica ladder, ingressi e uscite digitali, temporizzatori"
+SIC-03,Sicurezza informatica per tecnici,16,online,"Password, backup, phishing e buone pratiche"
+DAT-04,Analisi dati con fogli di calcolo,24,aula,"Formule, tabelle pivot, grafici"
+AI-05,Introduzione all'intelligenza artificiale,20,mista,"Cos'è il machine learning, casi d'uso, limiti"

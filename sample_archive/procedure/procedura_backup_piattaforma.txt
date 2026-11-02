@@ -1,0 +1,12 @@
+Procedura di backup della piattaforma e-learning
+
+Responsabile: Ufficio sistemi informativi
+Data revisione: 2025-11-20
+
+1. Ogni notte alle 02:00 viene eseguito il backup completo del database dei corsi.
+2. I file caricati da docenti e corsisti sono copiati su un secondo server.
+3. Ogni lunedì il responsabile verifica il registro dei backup e annota eventuali errori.
+4. Una volta al mese si esegue una prova di ripristino su un ambiente separato.
+
+In caso di errore del backup notturno il responsabile apre una segnalazione entro le 9:00
+e informa la direzione se il problema non è risolto entro la giornata.

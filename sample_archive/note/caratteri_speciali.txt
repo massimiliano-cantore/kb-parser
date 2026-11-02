@@ -1,0 +1,11 @@
+Prova di caratteri speciali – àèéìòù ÀÈÉÌÒÙ ç ñ ß
+
+Simboli: € £ ¥ © ® ™ ° ± × ÷ ≤ ≥ ≠ ∞ µ Ω
+Virgolette “tipografiche” e ‘singole’, apostrofo l’aula, puntini…
+Emoji: ✅ ⚠️ 🔧 📄
+Altre lingue: Gdańsk, Ærø, 東京, Москва, Αθήνα
+Spazi    multipli,	tabulazioni	e righe vuote:
+
+
+
+Fine del documento.
